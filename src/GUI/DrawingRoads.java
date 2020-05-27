@@ -19,16 +19,23 @@ public class DrawingRoads  extends  Shape{
 
     @Override
     public void paint(Graphics g) {
-       /* for(int i=0;i<numOfJunctions;i++)
+        for(int i=0;i<numOfJunctions;i++)
         {
-            double x= driving.getMap().getJunctions().get(i).getX();
-            double y= driving.getMap().getJunctions().get(i).getY();
-            g.drawLine((int)x,(int)y,10,10);
+
+            for(int j=0;j<driving.getMap().getJunctions().get(i).getEnteringRoads().size();j++)
+            {
+                double x1 = driving.getMap().getJunctions().get(i).getEnteringRoads().get(j).getStartJunction().getX();
+                double y1 = driving.getMap().getJunctions().get(i).getEnteringRoads().get(j).getStartJunction().getY();
+                double x2 = driving.getMap().getJunctions().get(i).getEnteringRoads().get(j).getEndJunction().getX();
+                double y2 = driving.getMap().getJunctions().get(i).getEnteringRoads().get(j).getEndJunction().getY();
+                g.drawLine((int)x1,(int)y1,(int)x2,(int)y2);
+
+            }
 
         }
 
-        */
-       g.drawLine(10,5,3,2);
+
+
 
     }
 }

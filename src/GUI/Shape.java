@@ -6,13 +6,12 @@ import java.awt.*;
 public class  Shape  extends JPanel {
     private int numOfShapes;
 
-    public Shape (int numOfShapes,JPanel panel){
+    public Shape (int numOfShapes){
         this.numOfShapes=numOfShapes;
 
-
-
-
     }
+
+
 
     @Override
     public void paint(Graphics g) {

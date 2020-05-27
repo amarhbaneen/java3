@@ -2,10 +2,14 @@ package GUI;
 
 import components.Driving;
 
-public class DrawingVechiles extends Shape {
+import java.awt.*;
+
+public class DrawingVechiles {
 
 
-    public DrawingVechiles(int numOfShapes) {
-        super(numOfShapes);
+    public DrawingVechiles() {
+
+
     }
 }
+

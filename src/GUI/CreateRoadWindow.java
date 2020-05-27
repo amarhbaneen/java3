@@ -11,6 +11,22 @@ import java.awt.event.ActionListener;
 import java.util.Hashtable;
 
 public class CreateRoadWindow {
+    public JSlider getJunctionSlider() {
+        return junctionSlider;
+    }
+
+    public void setJunctionSlider(JSlider junctionSlider) {
+        this.junctionSlider = junctionSlider;
+    }
+
+    public JSlider getVehiclesSlider() {
+        return vehiclesSlider;
+    }
+
+    public void setVehiclesSlider(JSlider vehiclesSlider) {
+        this.vehiclesSlider = vehiclesSlider;
+    }
+
     private static  final String nameslider1 = "Number Of Junctions";
     private static  final String nameslider2 = "Number Of Vehicels";
     private JSlider junctionSlider ;
@@ -19,7 +35,7 @@ public class CreateRoadWindow {
     private  JPanel myPanel;
     private  JPanel buttonPanel;
     private  JFrame myframe;
-    CreateRoadWindow()
+    public CreateRoadWindow()
     {
 
         myPanel = new JPanel();
@@ -38,6 +54,12 @@ public class CreateRoadWindow {
         myPanel.add(vehiclesSlider);
         buttonPanel.add(okButton).setBackground(Color.lightGray);
         buttonPanel.add(cancelButton).setBackground(Color.lightGray);
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+            }
+        });
 
 
 

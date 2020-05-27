@@ -1,16 +1,21 @@
-package utilities;
+package GUI;
 
 import GUI.DrawingJunctions;
 import GUI.DrawingRoads;
 import GUI.Shape;
 import components.Driving;
+import utilities.CreateRoadWindow;
 
+import javax.script.ScriptEngine;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class HomePage {
     private ArrayList<String> menu;
+   private CreateRoadWindow createRoadWindow;
 
     public ArrayList<String> getMenu() {
         return menu;
@@ -74,6 +79,14 @@ public class HomePage {
             JMenu item=new JMenu(s);
             menuBar.add(item);
         }
+        buttonslist.get(0).addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                createRoadWindow = new CreateRoadWindow();
+                createRoadWindow.createDialog();
+
+            }
+        });
     }
 
     public JMenuBar getMenuBar() {
@@ -81,6 +94,8 @@ public class HomePage {
     }
 
     public static void main(String[] args) {
+
+
         Driving newdriving = new Driving(10,10);
         DrawingJunctions newdraw = new DrawingJunctions(newdriving , 10,10);
         DrawingRoads newdraw1 = new DrawingRoads(newdriving , 10,10);
@@ -89,10 +104,15 @@ public class HomePage {
         HomePage homePage=new HomePage();
         myframe.setLayout(homePage.getMyBorderLayout());
         myframe.add(homePage.getMyPanel(),BorderLayout.SOUTH);
+        JPanel drawpanel = new JPanel();
+        drawpanel.setLayout(new OverlayLayout(drawpanel));
+
+        drawpanel.add(newdraw);
+        drawpanel.add(newdraw1);
+        myframe.add(drawpanel,BorderLayout.CENTER);
+
         myframe.setJMenuBar(homePage.getMenuBar());
 
-        myframe.add(newdraw);
-        myframe.add(newdraw1);
         myframe.setSize(800,600);
 
         myframe.setVisible(true);
