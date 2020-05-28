@@ -1,6 +1,7 @@
 package GUI;
 
 import components.Driving;
+import components.Vehicle;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +32,7 @@ public class CreateRoadWindow extends  JFrame{
     public void setVehiclesSlider(JSlider vehiclesSlider) {
         this.vehiclesSlider = vehiclesSlider;
     }
-    private  HomePage homePage;
+
     private static  final String nameslider1 = "Number Of Junctions";
     private static  final String nameslider2 = "Number Of Vehicels";
     private JSlider junctionSlider ;
@@ -59,9 +60,9 @@ public class CreateRoadWindow extends  JFrame{
     private  JPanel myPanel;
     private  JPanel buttonPanel;
     private  JFrame myframe;
-    public CreateRoadWindow(HomePage homePage)
+    public CreateRoadWindow(DrawingSystem homePage)
     {
-        this.homePage = homePage;
+
         myPanel = new JPanel();
         buttonPanel= new JPanel();
         myPanel.setLayout(new GridLayout(5,1));
@@ -80,6 +81,28 @@ public class CreateRoadWindow extends  JFrame{
         buttonPanel.add(cancelButton).setBackground(Color.lightGray);
 
 
+
+
+
+
+        getOkButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+
+
+
+               homePage.getDrawPanel().removeAll();
+               DrawingSystem newD = new DrawingSystem(junctionSlider.getValue(), vehiclesSlider.getValue());
+               homePage.setDrawPanel(newD.getDrawPanel());
+               homePage.validate();
+
+
+                myframe.dispose();
+
+
+            }
+        });
 
 
 
@@ -122,7 +145,7 @@ public class CreateRoadWindow extends  JFrame{
 
 
     }
-    public  void createDialog(HomePage homePage)
+    public  void createDialog(DrawingSystem homePage)
     {
         myframe = new JFrame("Road System");
         myframe.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
@@ -138,21 +161,7 @@ public class CreateRoadWindow extends  JFrame{
            }
 
        });
-      getOkButton().addActionListener(new ActionListener() {
-           @Override
-           public void actionPerformed(ActionEvent actionEvent) {
 
-               newpanel.setLayout(new OverlayLayout(newpanel));
-               Driving newdriving = new Driving(junctionSlider.getValue(),vehiclesSlider.getValue());
-               DrawingJunctions newdraw = new DrawingJunctions(newdriving, newdriving.getMap().getJunctions().size(), newdriving.getVehicles().size());
-               DrawingRoads newdraw1 = new DrawingRoads(newdriving, newdriving.getMap().getJunctions().size(), newdriving.getVehicles().size());
-              newpanel.add(newdraw);
-              newpanel.add(newdraw1);
-
-               myframe.dispose();
-
-           }
-       });
 
         myframe.setSize(600,300);
         myframe.setVisible(true);

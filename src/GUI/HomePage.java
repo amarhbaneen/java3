@@ -11,14 +11,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 public class HomePage {
-    public JFrame getMyframe() {
-        return myframe;
-    }
 
-    private  JFrame myframe = new JFrame("Road System");
+
     private ArrayList<String> menu;
     private CreateRoadWindow createRoadWindow;
 
@@ -26,7 +25,9 @@ public class HomePage {
         return drawpanel;
     }
 
-    private JPanel drawpanel = new JPanel();
+    private JPanel drawpanel = new JPanel(
+
+    );
 
     public int getJsliderNum() {
 
@@ -36,6 +37,14 @@ public class HomePage {
     public int getVsliderNum() {
 
         return vsliderNum;
+    }
+
+    public void setJsliderNum(int jsliderNum) {
+        this.jsliderNum = jsliderNum;
+    }
+
+    public void setVsliderNum(int vsliderNum) {
+        this.vsliderNum = vsliderNum;
     }
 
     private int jsliderNum;
@@ -94,15 +103,6 @@ public class HomePage {
 
         designButtons();
 
-
-
-        /*
-        ArrayList<Integer> sliderValue = createRoadWindow.getValue();
-        jsliderNum =  sliderValue.get(0);
-        vsliderNum = sliderValue.get(1);
-
-         */
-
     }
 
     public JMenuBar getMenuBar() {
@@ -149,39 +149,39 @@ public class HomePage {
         });
     }
 
+
     public static void main(String[] args) {
 
 
+        JFrame myframe = new JFrame("Road System");
+
         HomePage homePage = new HomePage();
-        CreateRoadWindow road = new CreateRoadWindow(homePage);
+        homePage.getDrawpanel().setLayout(new OverlayLayout(homePage.getDrawpanel()));
 
-        homePage.getMyframe().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+         DrawingSystem newdraw = new DrawingSystem(4,0);
+         myframe.add(newdraw.getDrawPanel());
 
-
+        CreateRoadWindow road = new CreateRoadWindow(newdraw);
+        myframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         homePage.buttonslist.get(0).addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
 
-                road.createDialog(homePage);
+                road.createDialog(newdraw);
 
 
             }
         });
-        homePage.getMyframe().add(road.getNewpanel(),BorderLayout.CENTER);
-       // homePage.getMyframe().add(homePage.drawpanel, BorderLayout.CENTER);
-       // homePage.getMyframe().setLayout(homePage.getMyBorderLayout());
-        homePage.getMyframe().add(homePage.getMyPanel(), BorderLayout.SOUTH);
-
-        homePage.getDrawpanel().setLayout(new OverlayLayout(homePage.drawpanel));
+        newdraw.getDrawPanel().removeAll();
 
 
+       myframe.add(homePage.getMyPanel(),BorderLayout.SOUTH);
+      myframe.add(homePage.getMenuBar(),BorderLayout.NORTH);
 
-        homePage.getMyframe().setJMenuBar(homePage.getMenuBar());
+        myframe.setSize(800, 600);
 
-        homePage.getMyframe().setSize(800, 600);
-
-        homePage.getMyframe().setVisible(true);
+        myframe.setVisible(true);
     }
 
     private void initButton() {
