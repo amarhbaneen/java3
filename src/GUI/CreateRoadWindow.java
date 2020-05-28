@@ -1,5 +1,7 @@
 package GUI;
 
+import components.Driving;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,6 +10,12 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 public class CreateRoadWindow extends  JFrame{
+
+    public JPanel getNewpanel() {
+        return newpanel;
+    }
+
+    private JPanel newpanel = new JPanel();
     public JSlider getJunctionSlider() {
         return junctionSlider;
     }
@@ -23,7 +31,7 @@ public class CreateRoadWindow extends  JFrame{
     public void setVehiclesSlider(JSlider vehiclesSlider) {
         this.vehiclesSlider = vehiclesSlider;
     }
-
+    private  HomePage homePage;
     private static  final String nameslider1 = "Number Of Junctions";
     private static  final String nameslider2 = "Number Of Vehicels";
     private JSlider junctionSlider ;
@@ -33,7 +41,9 @@ public class CreateRoadWindow extends  JFrame{
         return cancelButton;
     }
 
+
     private JButton cancelButton = new JButton("Cancel");
+
 
     public JButton getOkButton() {
         return okButton;
@@ -49,9 +59,9 @@ public class CreateRoadWindow extends  JFrame{
     private  JPanel myPanel;
     private  JPanel buttonPanel;
     private  JFrame myframe;
-    public CreateRoadWindow()
+    public CreateRoadWindow(HomePage homePage)
     {
-
+        this.homePage = homePage;
         myPanel = new JPanel();
         buttonPanel= new JPanel();
         myPanel.setLayout(new GridLayout(5,1));
@@ -79,10 +89,7 @@ public class CreateRoadWindow extends  JFrame{
 
 
     }
-    public  void closeActivate()
-    {
-        super.dispose();
-    }
+
     private void initHashtable(Hashtable poistion , int min , int max , int jump)
 
     {
@@ -115,27 +122,35 @@ public class CreateRoadWindow extends  JFrame{
 
 
     }
-    public  void createDialog()
+    public  void createDialog(HomePage homePage)
     {
         myframe = new JFrame("Road System");
         myframe.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-        CreateRoadWindow road = new CreateRoadWindow();
+       // CreateRoadWindow road = new CreateRoadWindow(homePage);
 
-        myframe.add(road.myPanel);
+        myframe.add(myPanel);
 
-        myframe.add(road.buttonPanel,BorderLayout.SOUTH);
-       road.getCancelButton().addActionListener(new ActionListener() {
+        myframe.add(buttonPanel,BorderLayout.SOUTH);
+       getCancelButton().addActionListener(new ActionListener() {
            @Override
            public void actionPerformed(ActionEvent actionEvent) {
                myframe.dispose();
            }
 
        });
-       road.getOkButton().addActionListener(new ActionListener() {
+      getOkButton().addActionListener(new ActionListener() {
            @Override
            public void actionPerformed(ActionEvent actionEvent) {
-               value.add(junctionSlider.getValue());
-               value.add(vehiclesSlider.getValue());
+
+               newpanel.setLayout(new OverlayLayout(newpanel));
+               Driving newdriving = new Driving(junctionSlider.getValue(),vehiclesSlider.getValue());
+               DrawingJunctions newdraw = new DrawingJunctions(newdriving, newdriving.getMap().getJunctions().size(), newdriving.getVehicles().size());
+               DrawingRoads newdraw1 = new DrawingRoads(newdriving, newdriving.getMap().getJunctions().size(), newdriving.getVehicles().size());
+              newpanel.add(newdraw);
+              newpanel.add(newdraw1);
+
+               myframe.dispose();
+
            }
        });
 
@@ -144,6 +159,8 @@ public class CreateRoadWindow extends  JFrame{
 
 
     }
+
+
 
 
 }
