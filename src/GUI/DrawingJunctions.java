@@ -3,7 +3,7 @@ package GUI;
 import components.Driving;
 import components.Junction;
 import components.LightedJunction;
-import utilities.CreateRoadWindow;
+import GUI.CreateRoadWindow;
 
 import java.awt.*;
 import java.security.PublicKey;

@@ -1,16 +1,13 @@
-package utilities;
-
-import javafx.geometry.HorizontalDirection;
+package GUI;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Hashtable;
 
-public class CreateRoadWindow {
+public class CreateRoadWindow extends  JFrame{
     public JSlider getJunctionSlider() {
         return junctionSlider;
     }
@@ -31,6 +28,23 @@ public class CreateRoadWindow {
     private static  final String nameslider2 = "Number Of Vehicels";
     private JSlider junctionSlider ;
     private JSlider vehiclesSlider;
+
+    public JButton getCancelButton() {
+        return cancelButton;
+    }
+
+    private JButton cancelButton = new JButton("Cancel");
+
+    public JButton getOkButton() {
+        return okButton;
+    }
+
+    private JButton okButton= new JButton("Ok");
+    public ArrayList<Integer> getValue() {
+        return value;
+    }
+
+    private ArrayList<Integer> value ;
    // private BorderLayout MyBorderLayout;
     private  JPanel myPanel;
     private  JPanel buttonPanel;
@@ -42,8 +56,8 @@ public class CreateRoadWindow {
         buttonPanel= new JPanel();
         myPanel.setLayout(new GridLayout(5,1));
         buttonPanel.setLayout(new GridLayout(1,2));
-        JButton okButton= new JButton("Ok");
-        JButton cancelButton = new JButton("Cancel");
+
+
         JLabel label1 = new JLabel(nameslider1,JLabel.CENTER);
         JLabel label2 = new JLabel(nameslider2,JLabel.CENTER);
         junctionSlider = createSlider(20,3,1);
@@ -54,12 +68,6 @@ public class CreateRoadWindow {
         myPanel.add(vehiclesSlider);
         buttonPanel.add(okButton).setBackground(Color.lightGray);
         buttonPanel.add(cancelButton).setBackground(Color.lightGray);
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-
-            }
-        });
 
 
 
@@ -68,6 +76,12 @@ public class CreateRoadWindow {
 
 
 
+
+
+    }
+    public  void closeActivate()
+    {
+        super.dispose();
     }
     private void initHashtable(Hashtable poistion , int min , int max , int jump)
 
@@ -110,20 +124,26 @@ public class CreateRoadWindow {
         myframe.add(road.myPanel);
 
         myframe.add(road.buttonPanel,BorderLayout.SOUTH);
+       road.getCancelButton().addActionListener(new ActionListener() {
+           @Override
+           public void actionPerformed(ActionEvent actionEvent) {
+               myframe.dispose();
+           }
+
+       });
+       road.getOkButton().addActionListener(new ActionListener() {
+           @Override
+           public void actionPerformed(ActionEvent actionEvent) {
+               value.add(junctionSlider.getValue());
+               value.add(vehiclesSlider.getValue());
+           }
+       });
 
         myframe.setSize(600,300);
         myframe.setVisible(true);
 
 
     }
-   /* private void close()
-    {
-        myframe.dispose();
-    }*/
 
-    public static void main(String[] args) {
-        CreateRoadWindow road = new CreateRoadWindow();
-        road.createDialog();
-    }
 
 }

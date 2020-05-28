@@ -4,7 +4,7 @@ import GUI.DrawingJunctions;
 import GUI.DrawingRoads;
 import GUI.Shape;
 import components.Driving;
-import utilities.CreateRoadWindow;
+import GUI.CreateRoadWindow;
 
 import javax.script.ScriptEngine;
 import javax.swing.*;
@@ -14,8 +14,32 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class HomePage {
+
     private ArrayList<String> menu;
    private CreateRoadWindow createRoadWindow;
+
+    public  JPanel getDrawpanel() {
+        return drawpanel;
+    }
+
+    private   JPanel drawpanel = new JPanel();
+    public int getJsliderNum() {
+
+        return jsliderNum;
+    }
+
+    public int getVsliderNum() {
+
+        return vsliderNum;
+    }
+
+    private int jsliderNum;
+   private  int vsliderNum;
+
+
+
+
+
 
     public ArrayList<String> getMenu() {
         return menu;
@@ -66,9 +90,33 @@ public class HomePage {
         initButton();
         myPanel.setLayout(new GridLayout(1,buttonslist.size()));
 
+        designButtons();
 
 
+        buttonslist.get(0).addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                createRoadWindow = new CreateRoadWindow();
+                createRoadWindow.createDialog();
+                /*
 
+*/
+            }
+        });
+        /*
+        ArrayList<Integer> sliderValue = createRoadWindow.getValue();
+        jsliderNum =  sliderValue.get(0);
+        vsliderNum = sliderValue.get(1);
+
+         */
+
+    }
+
+    public JMenuBar getMenuBar() {
+        return menuBar;
+    }
+    public void designButtons()
+    {
         menu=new ArrayList<>();
         menu.add("File");
         menu.add("Background");
@@ -79,37 +127,52 @@ public class HomePage {
             JMenu item=new JMenu(s);
             menuBar.add(item);
         }
-        buttonslist.get(0).addActionListener(new ActionListener() {
+        JButton exitButton = new JButton("exit");
+        JButton blueBackground = new JButton("BLUE");
+        JButton noneBackgroud = new JButton("None");
+        menuBar.getMenu(1).add(blueBackground);
+        menuBar.getMenu(1).add(noneBackgroud);
+        menuBar.getMenu(0).add(exitButton);
+        exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                createRoadWindow = new CreateRoadWindow();
-                createRoadWindow.createDialog();
+                System.exit(0);
+            }
+        });
+        blueBackground.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                drawpanel.setBackground(Color.BLUE);
+                myPanel.setBackground(Color.BLUE);
+
+
+            }
+        });
+        noneBackgroud.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
 
             }
         });
     }
 
-    public JMenuBar getMenuBar() {
-        return menuBar;
-    }
-
     public static void main(String[] args) {
 
-
-        Driving newdriving = new Driving(10,10);
-        DrawingJunctions newdraw = new DrawingJunctions(newdriving , 10,10);
-        DrawingRoads newdraw1 = new DrawingRoads(newdriving , 10,10);
+        HomePage homePage=new HomePage();
+        Driving newdriving = new Driving(2,homePage.getVsliderNum());
+        DrawingJunctions newdraw = new DrawingJunctions(newdriving , newdriving.getMap().getJunctions().size(),newdriving.getVehicles().size());
+        DrawingRoads newdraw1 = new DrawingRoads(newdriving , newdriving.getMap().getJunctions().size(),newdriving.getVehicles().size());
         JFrame myframe = new JFrame("Road System");
         myframe.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-        HomePage homePage=new HomePage();
+
         myframe.setLayout(homePage.getMyBorderLayout());
         myframe.add(homePage.getMyPanel(),BorderLayout.SOUTH);
-        JPanel drawpanel = new JPanel();
-        drawpanel.setLayout(new OverlayLayout(drawpanel));
 
-        drawpanel.add(newdraw);
-        drawpanel.add(newdraw1);
-        myframe.add(drawpanel,BorderLayout.CENTER);
+        homePage.getDrawpanel().setLayout(new OverlayLayout(homePage.drawpanel));
+
+        homePage.drawpanel.add(newdraw);
+        homePage.drawpanel.add(newdraw1);
+        myframe.add( homePage.drawpanel,BorderLayout.CENTER);
 
         myframe.setJMenuBar(homePage.getMenuBar());
 
