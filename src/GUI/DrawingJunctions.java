@@ -27,7 +27,7 @@ public class DrawingJunctions extends Shape {
 
     @Override
     public void paint(Graphics g) {
-        //g.drawOval(202,100,20,20);
+        setSize(800,600);
 
         for(int i=0;i<numOfJunctions;i++)
         {
@@ -53,7 +53,7 @@ public class DrawingJunctions extends Shape {
 
 
 
-           g.fillOval((int)x,(int)y,10,10);
+           g.fillOval((int)x,(int)y,15,15);
 
 
         }

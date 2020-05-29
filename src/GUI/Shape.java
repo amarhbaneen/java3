@@ -13,17 +13,8 @@ public class  Shape  extends JPanel {
 
 
 
-    @Override
-    public void paint(Graphics g) {
 
 
-
-
-        //setSize(800,800);
-        //g.drawOval(202,100,20,20);
-        //g.drawOval(30,70,50,50);
-
-    }
 
 }
 

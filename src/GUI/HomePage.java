@@ -11,12 +11,23 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 public class HomePage {
+    public static  interface OnOkClick {
+        void save(int num1, int num2);
+    }
+    private boolean flag=false;
 
+    public void setFlag(boolean flag) {
+        this.flag = flag;
+    }
+
+    public JFrame getMyframe() {
+        return myframe;
+    }
+
+    private  JFrame myframe = new JFrame("Road System");
 
     private ArrayList<String> menu;
     private CreateRoadWindow createRoadWindow;
@@ -25,9 +36,7 @@ public class HomePage {
         return drawpanel;
     }
 
-    private JPanel drawpanel = new JPanel(
-
-    );
+    private JPanel drawpanel = new JPanel();
 
     public int getJsliderNum() {
 
@@ -37,14 +46,6 @@ public class HomePage {
     public int getVsliderNum() {
 
         return vsliderNum;
-    }
-
-    public void setJsliderNum(int jsliderNum) {
-        this.jsliderNum = jsliderNum;
-    }
-
-    public void setVsliderNum(int vsliderNum) {
-        this.vsliderNum = vsliderNum;
     }
 
     private int jsliderNum;
@@ -103,6 +104,15 @@ public class HomePage {
 
         designButtons();
 
+
+
+        /*
+        ArrayList<Integer> sliderValue = createRoadWindow.getValue();
+        jsliderNum =  sliderValue.get(0);
+        vsliderNum = sliderValue.get(1);
+
+         */
+
     }
 
     public JMenuBar getMenuBar() {
@@ -149,39 +159,51 @@ public class HomePage {
         });
     }
 
-
     public static void main(String[] args) {
-
-
-        JFrame myframe = new JFrame("Road System");
-
         HomePage homePage = new HomePage();
-        homePage.getDrawpanel().setLayout(new OverlayLayout(homePage.getDrawpanel()));
+        homePage.getMyframe().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-         DrawingSystem newdraw = new DrawingSystem(4,0);
-         myframe.add(newdraw.getDrawPanel());
+        OnOkClick onOkClick = new OnOkClick() {
+            @Override
+            public void save(int num1, int num2) {
+             homePage.getDrawpanel().removeAll();
+                homePage.getDrawpanel().updateUI();
+                System.out.println("tmem");
+                Driving newdriving = new Driving(num1,num2);
+               DrawingJunctions newdraw = new DrawingJunctions(newdriving, newdriving.getMap().getJunctions().size(), newdriving.getVehicles().size());
+               DrawingRoads newdraw1 = new DrawingRoads(newdriving, newdriving.getMap().getJunctions().size(), newdriving.getVehicles().size());
+                DrawingVehicles newdraw2 = new DrawingVehicles(newdriving, newdriving.getMap().getJunctions().size(), newdriving.getVehicles().size());
 
-        CreateRoadWindow road = new CreateRoadWindow(newdraw);
-        myframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                homePage.getDrawpanel().add(newdraw);
+                homePage.getDrawpanel().add(newdraw1);
+                homePage.getDrawpanel().add(newdraw2);
+
+                homePage.getMyframe().add(homePage.getDrawpanel(),BorderLayout.CENTER);
+                homePage.getDrawpanel().updateUI();
+            }
+        };
 
         homePage.buttonslist.get(0).addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
-                road.createDialog(newdraw);
+                CreateRoadWindow road = new CreateRoadWindow(homePage);
+                road.createDialog(homePage, onOkClick);
 
 
             }
         });
-        newdraw.getDrawPanel().removeAll();
+
+        homePage.getMyframe().add(homePage.getMyPanel(), BorderLayout.SOUTH);
+
+        homePage.getDrawpanel().setLayout(new OverlayLayout(homePage.drawpanel));
 
 
-       myframe.add(homePage.getMyPanel(),BorderLayout.SOUTH);
-      myframe.add(homePage.getMenuBar(),BorderLayout.NORTH);
 
-        myframe.setSize(800, 600);
+        homePage.getMyframe().setJMenuBar(homePage.getMenuBar());
 
-        myframe.setVisible(true);
+        homePage.getMyframe().setSize(800, 800);
+
+        homePage.getMyframe().setVisible(true);
     }
 
     private void initButton() {
@@ -199,6 +221,7 @@ public class HomePage {
         }
 
     }
+
 
 
 

@@ -1,7 +1,6 @@
 package GUI;
 
 import components.Driving;
-import components.Vehicle;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +9,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
-public class CreateRoadWindow extends  JFrame{
+public class CreateRoadWindow extends  JFrame implements ActionListener{
 
     public JPanel getNewpanel() {
         return newpanel;
@@ -32,7 +31,7 @@ public class CreateRoadWindow extends  JFrame{
     public void setVehiclesSlider(JSlider vehiclesSlider) {
         this.vehiclesSlider = vehiclesSlider;
     }
-
+    private  HomePage homePage;
     private static  final String nameslider1 = "Number Of Junctions";
     private static  final String nameslider2 = "Number Of Vehicels";
     private JSlider junctionSlider ;
@@ -60,9 +59,9 @@ public class CreateRoadWindow extends  JFrame{
     private  JPanel myPanel;
     private  JPanel buttonPanel;
     private  JFrame myframe;
-    public CreateRoadWindow(DrawingSystem homePage)
+    public CreateRoadWindow(HomePage homePage)
     {
-
+        this.homePage = homePage;
         myPanel = new JPanel();
         buttonPanel= new JPanel();
         myPanel.setLayout(new GridLayout(5,1));
@@ -79,39 +78,12 @@ public class CreateRoadWindow extends  JFrame{
         myPanel.add(vehiclesSlider);
         buttonPanel.add(okButton).setBackground(Color.lightGray);
         buttonPanel.add(cancelButton).setBackground(Color.lightGray);
-
-
-
-
-
-
-        getOkButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-
-
-
-
-               homePage.getDrawPanel().removeAll();
-               DrawingSystem newD = new DrawingSystem(junctionSlider.getValue(), vehiclesSlider.getValue());
-               homePage.setDrawPanel(newD.getDrawPanel());
-               homePage.validate();
-
-
-                myframe.dispose();
-
-
-            }
-        });
-
-
-
-
-
+        okButton.addActionListener(this);
 
 
 
     }
+
 
     private void initHashtable(Hashtable poistion , int min , int max , int jump)
 
@@ -145,7 +117,7 @@ public class CreateRoadWindow extends  JFrame{
 
 
     }
-    public  void createDialog(DrawingSystem homePage)
+    public  void createDialog(HomePage homePage, HomePage.OnOkClick listener)
     {
         myframe = new JFrame("Road System");
         myframe.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
@@ -162,6 +134,22 @@ public class CreateRoadWindow extends  JFrame{
 
        });
 
+      getOkButton().addActionListener(new ActionListener() {
+           @Override
+           public void actionPerformed(ActionEvent actionEvent) {
+               listener.save(junctionSlider.getValue(),vehiclesSlider.getValue());
+
+//               newpanel.setLayout(new OverlayLayout(newpanel));
+//               Driving newdriving = new Driving(junctionSlider.getValue(),vehiclesSlider.getValue());
+//               DrawingJunctions newdraw = new DrawingJunctions(newdriving, newdriving.getMap().getJunctions().size(), newdriving.getVehicles().size());
+//               DrawingRoads newdraw1 = new DrawingRoads(newdriving, newdriving.getMap().getJunctions().size(), newdriving.getVehicles().size());
+//              newpanel.add(newdraw);
+//              newpanel.add(newdraw1);
+
+               myframe.dispose();
+
+           }
+       });
 
         myframe.setSize(600,300);
         myframe.setVisible(true);
@@ -170,6 +158,20 @@ public class CreateRoadWindow extends  JFrame{
     }
 
 
+    @Override
+    public void actionPerformed(ActionEvent actionEvent) {
+
+        if (actionEvent.getActionCommand().equals("Ok")){
+            //okButton.setText("yes");
+            homePage.setFlag(true);
+            myframe.dispose();
 
 
+
+
+
+
+
+        }
+    }
 }
